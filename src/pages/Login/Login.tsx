@@ -23,13 +23,14 @@ export const Login = (): JSX.Element => {
     // console.log('result', result.length);
     // setBankStatement(result);
 
-    for (let i = 0; i < 12; i++) {
+    for (let i = 11; i >= 0; i--) {
+      console.log(i)
       // Calculate start and end timestamps for the month
       const startOfMonth = new Date(`${year}-01-01T00:00:00`);
       startOfMonth.setMonth(i, 1);
       const endOfMonth = new Date(`${year}-01-31T23:59:59`);
+      // endOfMonth.setMonth(i + 1, 0);
       endOfMonth.setMonth(i + 1, 0);
-
       console.log('startOfMonth', startOfMonth, 'endOfMonth', endOfMonth);
       // console.log(Date.parse(startOfMonth) / 1000, Date.parse(endOfMonth));
       // Call your function with the start and end timestamps
@@ -40,7 +41,17 @@ export const Login = (): JSX.Element => {
         account,
       );
       if (result.errorDescription) {
-        return result;
+        if(result.errorDescription === "Value field 'to' out of bounds"){
+           data.push(...result.requestData)
+          console.log('res.data',data)
+          return {
+            errorDescription: result.errorDescription,
+            requestData: data,
+          };
+        } else {
+          return result;
+        }
+      
         // alert("Value field 'to' out of bounds");
       } else {
         // Add the data to the results array
